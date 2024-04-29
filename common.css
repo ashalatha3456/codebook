@@ -1,0 +1,12 @@
+.codebook--logo-container img{
+    height: 40px;
+    width: 40px;
+    }
+    /* nav.codebook-navigation-bar{
+        display: flex;
+        
+        
+    } */
+    div.codebook--icons-container span.codebook--icon{
+       font-size: 1.5rem;
+    }
