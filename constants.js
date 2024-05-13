@@ -40,4 +40,6 @@ export const FEATURED_PRODUCTS=[
     }
 ]
 export const MAX_RATING = 5;
+export const PRODUCTS_LIST_URL = 'https://run.mocky.io/v3/886bf2c8-957a-4474-b0cd-e95f0fc30543';
+
 //
