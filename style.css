@@ -13,7 +13,7 @@ div.codebook-info-container,div.codebook-banner-container{
 div.codebook-banner-container img{
     width: 100%;
 }
-.best-seller-tag{
+/* .best-seller-tag{
     background-color: orange;
     color: #fff;
     border-radius: 3px;
@@ -28,7 +28,7 @@ box-shadow:rgba(0, 0, 0, 0.24) 0px 3px 8px;
 li.codebook--book-card img.product-img{
 height: 270px;
 width: 100%;
-}
+} */
 div.codebook-review-card-1{
    border-top-right-radius: 0;
   border-bottom-right-radius: 0;

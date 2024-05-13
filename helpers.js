@@ -28,7 +28,7 @@ export function loadProductsToUI(products,uiContainer)
            src='${product.poster}' 
            alt='${product.name}'/>
            <div class="codebook-book-details p-3">
-           <h2>${product.name}</h2>
+           <h2 class="product-title">${product.name}</h2>
             <p>${product.overview}</p>
             <div class="product-ratings">
            
