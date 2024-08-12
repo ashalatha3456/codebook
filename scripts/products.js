@@ -1,5 +1,7 @@
-import { loadCopyRightYear, loadProductsToUI } from "./helpers.js";
-import { PRODUCTS_LIST_URL } from "./constants.js";
+import { loadCopyRightYear, loadProductsToUI, initializeSearch, loadGlobalHeaderFooter } from "./utilities/helpers.js";
+import { PRODUCTS_LIST_URL,PLP_PATH } from "./utilities/constants.js";
+import { fetchProductsList } from "./utilities/services.js";
+loadGlobalHeaderFooter();
 const productsListEle = document.querySelector('ul.codebook--products-list');
 const booksCountEle = document.getElementById('books-count');
 const loaderElement = document.querySelector(".loading-container");
@@ -10,10 +12,13 @@ const sortByPriceElements = document.querySelectorAll('input[type="radio"][name=
 const filterByRatingElements = document.querySelectorAll('input[type="radio"][name="filterByRating"]');
 const filterByCategoryElements = document.querySelectorAll('input[type="checkbox"][name="filterByCategory"]')
 const clearFiltersBtn = document.querySelector('.clear-filters');
+const searchInputEle = document.getElementById("search-input");
+ const searchtBtn = document.getElementById("search-btn");
 let PRODUCTS_DATA = [];
 let filterCategories = [];
 let sortType = null;
 let minRating = 1;
+let isSearchResultsDisplayed = false;
 filterByCategoryElements.forEach(ele=>{
   ele.addEventListener('change',function(){
     if(this.checked)
@@ -58,6 +63,15 @@ filtersContainer.classList.remove('d-none');
 closeFiltersBtn.addEventListener("click",function(){
   filtersContainer.classList.add('d-none');
 });
+searchInputEle.addEventListener("input", function(e) {
+  if(!this.value && isSearchResultsDisplayed) {
+    updateUI(PRODUCTS_DATA);
+    isSearchResultsDisplayed = false;
+    updateQueryParams('');
+  }
+})
+  
+
 clearFiltersBtn.addEventListener("click",resetFilters);
 
 function resetFilters(){
@@ -66,6 +80,47 @@ function resetFilters(){
   sortType = null;
   updateUI( PRODUCTS_DATA)
 }
+searchtBtn.addEventListener("click",function(){
+ const searchText = searchInputEle.value;
+ if(!searchText)
+  {
+    searchInputEle.focus();
+    return;
+  }
+  updateSearchResults(searchText);
+ })
+ function updateSearchResults(searchText){
+  const searchResults = PRODUCTS_DATA.filter(product=>product.name.toLowerCase().includes(searchText.toLowerCase()));
+  if(searchResults.length){
+ 
+  booksCountEle.innerText = `search Resluts (${searchResults.length})`;
+  loadProductsToUI(searchResults,productsListEle);
+  isSearchResultsDisplayed = true;
+  updateQueryParams(searchText);
+  }
+  else{
+    booksCountEle.innerText = `No Resluts found for ${searchText}`
+    loadProductsToUI(PRODUCTS_DATA,productsListEle);
+    isSearchResultsDisplayed = false;
+     updateQueryParams('');
+ }
+}
+function updateQueryParams(query){
+  let newUrl = `/${PLP_PATH}`;
+  if(query) {
+    newUrl = `/${PLP_PATH}?q=${query}`;
+  }
+
+window.history.replaceState({},"", newUrl);
+}
+// function updateQueryParams()
+// {
+//    const newParams = new URLSearchParams(window.location.search).set("q",query);
+//    newParams.set("q",query);
+//    const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+//   const newUrl2 = `/products.html?q=${query}`;
+//   window.history.replaceState({},"",newUrl);
+// }
 function sortProductsByPrice(sortType, collection){
    const sortedData = JSON.parse(JSON.stringify(collection)).sort((a,b)=>{
     if(sortType === "asc")
@@ -101,24 +156,37 @@ function filterProductsByRating(rating,collection){
 function updateUI(data){
     booksCountEle.innerText = '';
   if(data && data.length>0){
-    booksCountEle.innerText = `(${data?.length})`;
+    booksCountEle.innerText = `All ebooks(${data?.length})`;
     loadProductsToUI(data,productsListEle);
   }
 }
 async function fetchProducts(){
      try{
          loaderElement.classList.remove('d-none');
-         const response = await fetch(PRODUCTS_LIST_URL)
-         const data = await response.json();
+         const data = await fetchProductsList();
          PRODUCTS_DATA = data;
-         updateUI(data);
+         const searchText =new URLSearchParams(window.location.search).get("q");
+         if(searchText){
+          searchInputEle.value = searchText;
+          updateSearchResults(searchText)
+         }
+         else{
+          updateUI(data);
+         }
+         
         }
      catch(e){
-               console.log(e,"error while fetching");
-     }
+               console.log(e,"error while fetching data");
+               booksCountEle.innerText = "Unable to fetch products please try again"
+               booksCountEle.style.color = 'red';
+              }
      finally{
            loaderElement.classList.add('d-none');
      }
 }
-fetchProducts();
-loadCopyRightYear(document.getElementById('copyright-year'));
+(function init(){
+  fetchProducts();
+  
+  initializeSearch(false,updateSearchResults);
+}())
+

@@ -40,6 +40,23 @@ export const FEATURED_PRODUCTS=[
     }
 ]
 export const MAX_RATING = 5;
-export const PRODUCTS_LIST_URL = 'https://run.mocky.io/v3/886bf2c8-957a-4474-b0cd-e95f0fc30543';
-
-//
+// export const PRODUCTS_LIST_URL = 'https://run.mocky.io/v3/886bf2c8-957a-4474-b0cd-e95f0fc30543';
+export const PRODUCTS_BASEURL = 'https://praneeth836-codebook-default-rtdb.firebaseio.com/products';
+export const CART_URL = 'https://praneeth836-codebook-default-rtdb.firebaseio.com/carts';
+export const ORDERS_URL = 'https://praneeth836-codebook-default-rtdb.firebaseio.com/orders';
+export const PRODUCTS_LIST_URL = `${PRODUCTS_BASEURL}.json`;
+export const PLP_PATH = "pages/products.html";
+export const PDP_PATH="pages/productDetails.html";
+export const LOGIN_PATH = "pages/login.html";
+export const CART_PATH = "pages/cart.html";
+export const ACCOUNTPAGE_PATH = "pages/account.html";
+export const ORDER_CONFIRMATION_PATH="pages/orderConfirmation.html";
+export const ORDER_HISTORY_PATH = "pages/orderHistory.html";
+export const FIREBASE_API_KEY = 'AIzaSyBNdOoFRRA9dVOuDrl7_2rmBwIqMQg5TxA'
+export const CREATE_NEW_USER_API = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`;
+export const SIGN_IN_USER_API =    `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`;
+export const UPDATE_USER_API = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${FIREBASE_API_KEY}`
+export const REFRESH_USER_API = `https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`
+export const STRIPE_PUBLIC_KEY = 'pk_test_51Pgz81GgCPT6EilWtlM97Ar3Hna9GXIpUgU2QJXxh4mMJm9O7F8F0fH63vSb7msISrOenRr8YVOkAmt935HCT6kI00H6NMHehh';
+export const STRIPE_SECRET_KEY='sk_test_51Pgz81GgCPT6EilW20PXIYexdpqiMMuzwWcTltcCLDSFjeVfpoKwCI7rQDojn7wwidZy22CpxU9VMmsTArGVGm2G00lKP5c8ED';
+export const STRIPE_CHECKOUT_SESSION_URL = 'https://api.stripe.com/v1/checkout/sessions';
